@@ -61,14 +61,13 @@ public class AnnouncePacket {
         Voice voice = TTSVoice.provides().stream().filter(v -> v.getShortName().equals("en-GB-SoniaNeural")).findFirst().get();
         // remove %tmp%/tts.mp3
         String suffix = String.valueOf(new Random().nextInt(10) + 1);
-        System.out.println(new TTS(voice,packet.message).fileName("tts" + suffix).formatMp3().storage(System.getProperty("java.io.tmpdir")).trans());
+        new TTS(voice,packet.message).fileName("tts" + suffix).formatMp3().storage(System.getProperty("java.io.tmpdir")).trans();
         String mp3path = Path.of(System.getProperty("java.io.tmpdir"),"tts%s.mp3".formatted(suffix)).toString();
         String wavePath = Path.of(System.getProperty("java.io.tmpdir"),"tts%s.wav".formatted(suffix)).toString();
         Converter converter = new Converter();
         try {
             converter.convert(mp3path,wavePath);
         } catch (JavaLayerException e) {
-            System.out.println("Failed to Convert");
             new File(mp3path).delete();
             doneAnnouncing = true;
             return;
