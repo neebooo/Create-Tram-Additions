@@ -1,0 +1,8 @@
+{
+  "tram_bell": {
+    "subtitles": "sounds.createtramadditions.tram_bell",
+    "sounds": [
+      "createtramadditions:tram_bell"
+    ]
+  }
+}
