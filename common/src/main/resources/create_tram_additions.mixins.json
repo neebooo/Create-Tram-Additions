@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "hu.qliqs.TramAdditions.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "AccessorScheduleRuntime",
+    "MixinScheduleRuntime",
+    "MixinTrainAdditionalContext"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
