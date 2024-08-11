@@ -113,31 +113,31 @@
 [Architectury Transformer DEBUG]  - /home/nano/Development/CreateTramAdditions_v2/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2_forge_1_20_1_47_3_3_forge/com/jozufozu/flywheel/flywheel-forge-1.20.1/0.6.10-7/flywheel-forge-1.20.1-0.6.10-7.jar
 [Architectury Transformer DEBUG]  - /home/nano/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.83/9ee94951bc107d382519975d04bc950b6c6ab297/fastjson-1.2.83.jar
 [Architectury Transformer DEBUG]  - /home/nano/.gradle/caches/modules-2/files-2.1/junit/junit/3.8.2/7e4cde26b53a9a0e3fe5b00d1dbbc7cc1d46060/junit-3.8.2.jar
-[Architectury Transformer] Read classpath in 2.879 s
+[Architectury Transformer] Read classpath in 2.279 s
 [Architectury Transformer DEBUG] Closed File Systems for /home/nano/Development/CreateTramAdditions_v2/common/build/devlibs/create_tram_additions-common-1.0.0-dev.jar
-[Architectury Transformer DEBUG] Transforming 8 transformer(s) from /home/nano/Development/CreateTramAdditions_v2/common/build/devlibs/create_tram_additions-common-1.0.0-dev.jar to /tmp/14144644437383831825.jar: 
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RuntimeMixinRefmapDetector@7dcae30
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformExpectPlatform@4e1acc34
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RemapInjectables@3a31cbcc
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformPlatformOnly@57eac75b
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeAnnotations@35255eb8
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment@2dc65f44
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.GenerateFakeForgeMod@191d9e9b
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.FixForgeMixin@184c42fc
-[Architectury Transformer DEBUG] Transforming from /home/nano/Development/CreateTramAdditions_v2/common/build/devlibs/create_tram_additions-common-1.0.0-dev.jar to /tmp/14144644437383831825.jar with 8 transformer(s) on dev.architectury.transformer.handler.SimpleTransformerHandler
+[Architectury Transformer DEBUG] Transforming 8 transformer(s) from /home/nano/Development/CreateTramAdditions_v2/common/build/devlibs/create_tram_additions-common-1.0.0-dev.jar to /tmp/5775104512068757148.jar: 
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RuntimeMixinRefmapDetector@179d0438
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformExpectPlatform@87ffc8f
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.RemapInjectables@12252194
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformPlatformOnly@1895e169
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeAnnotations@67568a87
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment@103a8966
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.GenerateFakeForgeMod@2ba82374
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.FixForgeMixin@1c0101c1
+[Architectury Transformer DEBUG] Transforming from /home/nano/Development/CreateTramAdditions_v2/common/build/devlibs/create_tram_additions-common-1.0.0-dev.jar to /tmp/5775104512068757148.jar with 8 transformer(s) on dev.architectury.transformer.handler.SimpleTransformerHandler
 [Architectury Transformer DEBUG] Reading mixin mappings file: /home/nano/Development/CreateTramAdditions_v2/forge/build/loom-cache/mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.3.3.main.tiny
 [Architectury Transformer DEBUG] Remapping with 2 mapping provider(s):
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$145/0x000076e7dc0cdc88@62963fb0
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076e7dc0cdeb0@40d1799c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076ab70091840@d66374c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$147/0x000076ab70091a90@61de38f3
 [Architectury Transformer DEBUG] Remapping Classes:
 [Architectury Transformer DEBUG] net/fabricmc/api/EnvType -> net/minecraftforge/api/distmarker/Dist
 [Architectury Transformer DEBUG] net/fabricmc/api/Environment -> net/minecraftforge/api/distmarker/OnlyIn
 [Architectury Transformer DEBUG] Found class transformer
-[Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/ICustomExecutableInstruction with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/TramAdditions with maxs=true frames=true
-[Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin/AccessorScheduleRuntime with maxs=true frames=true
+[Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/ICustomExecutableInstruction with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin/MixinTrainAdditionalContext with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin/MixinScheduleRuntime with maxs=true frames=true
+[Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin/AccessorScheduleRuntime with maxs=true frames=true
 [Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin_interfaces/TrainACInterface with maxs=true frames=true
 [Architectury Transformer DEBUG] Checking whether /create_tram_additions-common-common-refmap.json is a mixin config.
 [Architectury Transformer DEBUG] Checking whether /create_tram_additions.mixins.json is a mixin config.
@@ -146,13 +146,13 @@
 [Architectury Transformer DEBUG] Found mixin config(s): create_tram_additions.mixins.json
 [Architectury Transformer DEBUG] Appended Launch Argument: [--mixin.config, create_tram_additions.mixins.json]
 [Architectury Transformer DEBUG] Remapping refmap from intermediary to srg: create_tram_additions-forge-forge-refmap.json
-[Architectury Transformer DEBUG] Closed File Systems for /tmp/14144644437383831825.jar
+[Architectury Transformer DEBUG] Closed File Systems for /tmp/5775104512068757148.jar
 [Architectury Transformer] Listening at /home/nano/Development/CreateTramAdditions_v2/common/build/devlibs/create_tram_additions-common-1.0.0-dev.jar
 [Architectury Transformer DEBUG] Transforming from hu/qliqs/TramAdditions/mixin_interfaces/TrainACInterface.class to hu/qliqs/TramAdditions/mixin_interfaces/TrainACInterface.class with 8 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Reading mixin mappings file: /home/nano/Development/CreateTramAdditions_v2/forge/build/loom-cache/mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.3.3.main.tiny
 [Architectury Transformer DEBUG] Remapping with 2 mapping provider(s):
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$145/0x000076e7dc0cdc88@62963fb0
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076e7dc0cdeb0@40d1799c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076ab70091840@d66374c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$147/0x000076ab70091a90@61de38f3
 [Architectury Transformer DEBUG] Remapping with Dirty Mappings...
 [Architectury Transformer DEBUG] Remapping Classes:
 [Architectury Transformer DEBUG] net/fabricmc/api/EnvType -> net/minecraftforge/api/distmarker/Dist
@@ -160,16 +160,40 @@
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin_interfaces/TrainACInterface with maxs=true frames=true
 [Architectury Transformer DEBUG] Remapping refmap from intermediary to srg: create_tram_additions-forge-forge-refmap.json
-[Architectury Transformer DEBUG] Transformed hu/qliqs/TramAdditions/mixin_interfaces/TrainACInterface in 129.3 ms
+[Architectury Transformer DEBUG] Transformed hu/qliqs/TramAdditions/mixin_interfaces/TrainACInterface in 144.7 ms
 [Architectury Transformer DEBUG] Transforming from hu/qliqs/TramAdditions/TramAdditions.class to hu/qliqs/TramAdditions/TramAdditions.class with 8 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
 [Architectury Transformer DEBUG] Reading mixin mappings file: /home/nano/Development/CreateTramAdditions_v2/forge/build/loom-cache/mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.3.3.main.tiny
 [Architectury Transformer DEBUG] Remapping with 2 mapping provider(s):
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$145/0x000076e7dc0cdc88@62963fb0
-[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076e7dc0cdeb0@40d1799c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076ab70091840@d66374c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$147/0x000076ab70091a90@61de38f3
 [Architectury Transformer DEBUG] Remapping Classes:
 [Architectury Transformer DEBUG] net/fabricmc/api/EnvType -> net/minecraftforge/api/distmarker/Dist
 [Architectury Transformer DEBUG] net/fabricmc/api/Environment -> net/minecraftforge/api/distmarker/OnlyIn
 [Architectury Transformer DEBUG] Found class transformer
 [Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/TramAdditions with maxs=true frames=true
 [Architectury Transformer DEBUG] Remapping refmap from intermediary to srg: create_tram_additions-forge-forge-refmap.json
-[Architectury Transformer DEBUG] Transformed hu/qliqs/TramAdditions/TramAdditions in 26.07 ms
+[Architectury Transformer DEBUG] Transformed hu/qliqs/TramAdditions/TramAdditions in 34.42 ms
+[Architectury Transformer DEBUG] Transforming from hu/qliqs/TramAdditions/ICustomExecutableInstruction.class to hu/qliqs/TramAdditions/ICustomExecutableInstruction.class with 8 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
+[Architectury Transformer DEBUG] Reading mixin mappings file: /home/nano/Development/CreateTramAdditions_v2/forge/build/loom-cache/mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.3.3.main.tiny
+[Architectury Transformer DEBUG] Remapping with 2 mapping provider(s):
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076ab70091840@d66374c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$147/0x000076ab70091a90@61de38f3
+[Architectury Transformer DEBUG] Remapping Classes:
+[Architectury Transformer DEBUG] net/fabricmc/api/EnvType -> net/minecraftforge/api/distmarker/Dist
+[Architectury Transformer DEBUG] net/fabricmc/api/Environment -> net/minecraftforge/api/distmarker/OnlyIn
+[Architectury Transformer DEBUG] Found class transformer
+[Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/ICustomExecutableInstruction with maxs=true frames=true
+[Architectury Transformer DEBUG] Remapping refmap from intermediary to srg: create_tram_additions-forge-forge-refmap.json
+[Architectury Transformer DEBUG] Transformed hu/qliqs/TramAdditions/ICustomExecutableInstruction in 76.08 ms
+[Architectury Transformer DEBUG] Transforming from hu/qliqs/TramAdditions/mixin/AccessorScheduleRuntime.class to hu/qliqs/TramAdditions/mixin/AccessorScheduleRuntime.class with 8 transformer(s) on dev.architectury.transformer.handler.TinyRemapperPreparedTransformerHandler
+[Architectury Transformer DEBUG] Reading mixin mappings file: /home/nano/Development/CreateTramAdditions_v2/forge/build/loom-cache/mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.3.3.main.tiny
+[Architectury Transformer DEBUG] Remapping with 2 mapping provider(s):
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$146/0x000076ab70091840@d66374c
+[Architectury Transformer DEBUG]  - dev.architectury.transformer.transformers.TransformForgeEnvironment$$Lambda$147/0x000076ab70091a90@61de38f3
+[Architectury Transformer DEBUG] Remapping Classes:
+[Architectury Transformer DEBUG] net/fabricmc/api/EnvType -> net/minecraftforge/api/distmarker/Dist
+[Architectury Transformer DEBUG] net/fabricmc/api/Environment -> net/minecraftforge/api/distmarker/OnlyIn
+[Architectury Transformer DEBUG] Found class transformer
+[Architectury Transformer DEBUG] Writing hu/qliqs/TramAdditions/mixin/AccessorScheduleRuntime with maxs=true frames=true
+[Architectury Transformer DEBUG] Remapping refmap from intermediary to srg: create_tram_additions-forge-forge-refmap.json
+[Architectury Transformer DEBUG] Transformed hu/qliqs/TramAdditions/mixin/AccessorScheduleRuntime in 15.58 ms

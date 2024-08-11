@@ -17,6 +17,9 @@ out
 build
 .gradle
 
+forge/build
+forge/.gradle
+
 # other
 eclipse
 run

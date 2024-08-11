@@ -2,6 +2,8 @@ package hu.qliqs.TramAdditions.forge;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
+import dev.architectury.event.events.common.LifecycleEvent;
+import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.forge.EventBuses;
 import hu.qliqs.TramAdditions.forge.Network.ModMessages;
 import hu.qliqs.TramAdditions.forge.Network.Packets.AnnouncePacket;
@@ -9,7 +11,6 @@ import hu.qliqs.TramAdditions.mixin_interfaces.TrainACInterface;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -43,11 +44,14 @@ public final class TramAdditions {
         e.enqueueWork(() -> {
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("announcemessage", AnnounceInstruction::new);
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("nextstationinfo", NextStationInstruction::new);
+            TickEvent.SERVER_PRE.register((listener) -> {
+                onWorldTick();
+            });
             ModMessages.register();
         });
     }
-    @SubscribeEvent
-    public static void onWorldTick(TickEvent.ServerTickEvent e) {
+
+    public static void onWorldTick() {
         Create.RAILWAYS.trains.values().forEach(train -> {
             if (!hasAnnouncedNextStation.containsKey(train.id)) {
                 hasAnnouncedNextStation.put(train.id,false);
