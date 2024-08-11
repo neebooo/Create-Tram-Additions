@@ -1,17 +1,17 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "GNU General Public License v3.0"
 
 [[mods]]
 modId = "create_tram_additions"
 version = "1.0.0"
 displayName = "Create Tram Additions"
-authors = "Me!"
+authors = "qliqs"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+A mod that adds on-board announcements on the trains.
 '''
-#logoFile = ""
+logoFile = "tramadditions.png"
 
 [[dependencies.create_tram_additions]]
 modId = "forge"
