@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "create_tram_additions:block/floor_block"
+    }
+  }
+}

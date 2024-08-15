@@ -5,7 +5,7 @@ autoSuggestions:true
 chatColors:true
 chatLinks:true
 chatLinksPrompt:true
-enableVsync:true
+enableVsync:false
 entityShadows:true
 forceUnicodeFont:false
 discrete_mouse_scroll:false
@@ -31,13 +31,13 @@ glintStrength:0.75
 damageTiltStrength:1.0
 highContrast:false
 gamma:0.5
-renderDistance:12
-simulationDistance:12
+renderDistance:2
+simulationDistance:5
 entityDistanceScaling:1.0
-guiScale:0
+guiScale:2
 particles:0
-maxFps:120
-graphicsMode:1
+maxFps:260
+graphicsMode:0
 ao:true
 prioritizeChunkUpdates:0
 biomeBlendRadius:2

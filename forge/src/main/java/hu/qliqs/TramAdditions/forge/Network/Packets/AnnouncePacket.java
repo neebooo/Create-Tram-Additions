@@ -67,7 +67,7 @@ public class AnnouncePacket {
         }
         tts.config().oneShot().voice(voice);
 
-        tts.synthesis(packet.message + "               "); // Theres a weird bug when it stops at the very last letters this is why I am appending spaces
+        tts.synthesis(packet.message);
         doneAnnouncing = true;
     }
 }

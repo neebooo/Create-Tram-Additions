@@ -1,4 +1,6 @@
 {
   "create_tram_additions.schedule.instruction.announcemessage": "Announce Message",
-  "create_tram_additions.schedule.instruction.nextstationinfo": "Next Station Info"
+  "create_tram_additions.schedule.instruction.nextstationinfo": "Next Station Info",
+  "creativetab.tram_additions_tab": "Tram Additions",
+  "block.create_tram_additions.floor_block": "Floor Block"
 }

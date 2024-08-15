@@ -2,17 +2,20 @@ package hu.qliqs.TramAdditions.forge;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
-import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.forge.EventBuses;
 import hu.qliqs.TramAdditions.forge.Network.ModMessages;
 import hu.qliqs.TramAdditions.forge.Network.Packets.AnnouncePacket;
+import hu.qliqs.TramAdditions.forge.blocks.ModBlocks;
+import hu.qliqs.TramAdditions.forge.items.ModCreativeModeTabs;
+import hu.qliqs.TramAdditions.forge.items.ModItems;
 import hu.qliqs.TramAdditions.mixin_interfaces.TrainACInterface;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -34,10 +37,15 @@ public final class TramAdditions {
 
         IEventBus modEventBus = EventBuses.getModEventBus(hu.qliqs.TramAdditions.TramAdditions.MOD_ID).get();
 
+        ModCreativeModeTabs.register(modEventBus);
+
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+
+
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
-
         hu.qliqs.TramAdditions.TramAdditions.init();
     }
     private void commonSetup(final FMLCommonSetupEvent e) {
@@ -50,6 +58,14 @@ public final class TramAdditions {
             ModMessages.register();
         });
     }
+
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModBlocks.floor_block.get());
+        }
+    }
+
 
     public static void onWorldTick() {
         Create.RAILWAYS.trains.values().forEach(train -> {
