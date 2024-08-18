@@ -1,5 +1,6 @@
 package hu.qliqs.TramAdditions.forge.Network.Packets;
 
+import hu.qliqs.TramAdditions.forge.TramAdditions;
 import hu.qliqs.TramAdditions.forge.Utils;
 import javazoom.jl.converter.Converter;
 import javazoom.jl.decoder.JavaLayerException;
@@ -38,36 +39,24 @@ public class AnnouncePacket {
     public static boolean handle(AnnouncePacket packet, Supplier<NetworkEvent.Context> supplier) {
         // We are on the client
         NetworkEvent.Context context = supplier.get();
-        new Thread(() -> {
+        Thread thread = new Thread(() -> {
             try {
                 handleThreaded(packet);
-            } catch (IOException | UnsupportedAudioFileException e) {
+            } catch (IOException | UnsupportedAudioFileException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }).start();
+        });
+        thread.start();
         return true;
     }
 
-    public static void handleThreaded(AnnouncePacket packet) throws IOException, UnsupportedAudioFileException {
+    public static void handleThreaded(AnnouncePacket packet) throws IOException, UnsupportedAudioFileException, InterruptedException {
         while (!doneAnnouncing) {
             Thread.onSpinWait();
         }
         doneAnnouncing = false;
-        TTS tts = new TTS();
-        final VoiceRole[] roles = VoiceRole.byLocale ("en-GB").toArray (new VoiceRole[0]);
-        VoiceRole voice = null;
-        for (VoiceRole role : roles) {
-            if (role.nickname == "Sonia") {
-                voice = role;
-                break;
-            }
-        }
-        if (voice == null) {
-            voice = roles[0];
-        }
-        tts.config().oneShot().voice(voice);
 
-        tts.synthesis(packet.message);
+        TramAdditions.getTTS().synthesis(packet.message);
         doneAnnouncing = true;
     }
 }

@@ -19,17 +19,55 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.dreamwork.tools.tts.ITTSListener;
+import org.dreamwork.tools.tts.TTS;
+import org.dreamwork.tools.tts.VoiceRole;
+import org.java_websocket.client.WebSocketClient;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Mod(hu.qliqs.TramAdditions.TramAdditions.MOD_ID)
 public final class TramAdditions {
 
     public static Map<UUID, Boolean> hasAnnouncedNextStation = new HashMap<>();
     public static Map<UUID, Boolean> hasAnnouncedCurrentStation = new HashMap<>();
+
+    public static TTS tts = null;
+
+    public static boolean isTTSShutDown() {
+        Field declaredField = null;
+        try {
+            declaredField = tts.getClass().getDeclaredField("client");
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
+        declaredField.setAccessible(true);
+        try {
+            WebSocketClient client = (WebSocketClient) declaredField.get(tts);
+            return client == null;
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static TTS getTTS() {
+            if (tts == null || isTTSShutDown()) {
+                try {
+                    tts = new TTS();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                tts.config()
+                        .voice(VoiceRole.Sonia);
+            }
+            return tts;
+    }
 
     public TramAdditions() {
         // Submit our event bus to let Architectury API register our content on the right time.
@@ -48,10 +86,12 @@ public final class TramAdditions {
         MinecraftForge.EVENT_BUS.register(this);
         hu.qliqs.TramAdditions.TramAdditions.init();
     }
+
     private void commonSetup(final FMLCommonSetupEvent e) {
         e.enqueueWork(() -> {
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("announcemessage", AnnounceInstruction::new);
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("nextstationinfo", NextStationInstruction::new);
+            hu.qliqs.TramAdditions.TramAdditions.registerInstruction("setlanguage", SetLanguageInstruction::new);
             TickEvent.SERVER_PRE.register((listener) -> {
                 onWorldTick();
             });
@@ -61,7 +101,7 @@ public final class TramAdditions {
 
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModBlocks.floor_block.get());
         }
     }
@@ -70,21 +110,21 @@ public final class TramAdditions {
     public static void onWorldTick() {
         Create.RAILWAYS.trains.values().forEach(train -> {
             if (!hasAnnouncedNextStation.containsKey(train.id)) {
-                hasAnnouncedNextStation.put(train.id,false);
+                hasAnnouncedNextStation.put(train.id, false);
             }
 
             if (!hasAnnouncedCurrentStation.containsKey(train.id)) {
-                hasAnnouncedCurrentStation.put(train.id,false);
+                hasAnnouncedCurrentStation.put(train.id, false);
             }
 
             if (train.getCurrentStation() == null) {
-                hasAnnouncedCurrentStation.replace(train.id,false);
+                hasAnnouncedCurrentStation.replace(train.id, false);
                 if (train.navigation.destination != null && !hasAnnouncedNextStation.get(train.id)) {
                     train.carriages.forEach(carriage -> {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {
                                 if (p instanceof Player) {
-                                    String msg = makeMessage(train.navigation.destination.name,false,train);
+                                    String msg = makeMessage(train.navigation.destination.name, false, train);
                                     if (msg.isEmpty()) {
                                         return;
                                     }
@@ -93,7 +133,7 @@ public final class TramAdditions {
                             });
                         });
                     });
-                    hasAnnouncedNextStation.replace(train.id,true);
+                    hasAnnouncedNextStation.replace(train.id, true);
                 }
             } else {
                 if (!hasAnnouncedCurrentStation.get(train.id)) {
@@ -101,7 +141,7 @@ public final class TramAdditions {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {
                                 if (p instanceof Player) {
-                                    String msg = makeMessage(train.getCurrentStation().name,true,train);
+                                    String msg = makeMessage(train.getCurrentStation().name, true, train);
                                     if (msg.isEmpty()) {
                                         return;
                                     }
@@ -110,16 +150,16 @@ public final class TramAdditions {
                             });
                         });
                     });
-                    hasAnnouncedCurrentStation.replace(train.id,true);
+                    hasAnnouncedCurrentStation.replace(train.id, true);
                 }
-                hasAnnouncedNextStation.replace(train.id,false);
+                hasAnnouncedNextStation.replace(train.id, false);
             }
         });
     }
 
     public static String makeMessage(String stationName, Boolean arrived, Train train) {
         if (arrived) {
-            return "%s.".formatted(stationName.replaceAll("\\d+$",""));
+            return "%s.".formatted(stationName.replaceAll("\\d+$", ""));
         }
 
         TrainACInterface trainAC = ((TrainACInterface) train);
@@ -134,6 +174,6 @@ public final class TramAdditions {
             additionalString = "Change here for %s.".formatted(trainAC.createTramAdditions$getChangeHereString());
         }
         trainAC.createTramAdditions$setChangeHereString("");
-        return "The next station is %s.%s".formatted(stationName.replaceAll("\\d+$",""), additionalString);
+        return "The next station is %s.%s".formatted(stationName.replaceAll("\\d+$", ""), additionalString);
     }
 }

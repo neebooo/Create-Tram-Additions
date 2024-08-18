@@ -1,6 +1,8 @@
 /home/nano/.gradle/caches/fabric-loom/1.20.1/forge/1.20.1-47.3.3/client-extra.jar
-/home/nano/.gradle/caches/modules-2/files-2.1/io.github.seth-yang/java-wrapper-for-edge-tts/1.0.0/1e8ff332d3554e860c6a3b387031a9078c749f04/java-wrapper-for-edge-tts-1.0.0.jar
+/home/nano/.gradle/caches/modules-2/files-2.1/io.github.seth-yang/java-wrapper-for-edge-tts/1.0.1/69d7c294f52e8989b45c3e3b9e5f871a659faa75/java-wrapper-for-edge-tts-1.0.1.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.6/88c40d8b4f33326f19a7d3c0aaf2c7e8721d4953/slf4j-api-2.0.6.jar
+/home/nano/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-reload4j/1.7.36/db708f7d959dee1857ac524636e85ecf2e1781c1/slf4j-reload4j-1.7.36.jar
+/home/nano/.gradle/caches/modules-2/files-2.1/ch.qos.reload4j/reload4j/1.2.19/4eae9978468c5e885a6fb44df7e2bbc07a20e6ce/reload4j-1.2.19.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/org.java-websocket/Java-WebSocket/1.5.7/ae98d3490567504af347bd6b24f4a0a520f24cc4/Java-WebSocket-1.5.7.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/com.googlecode.soundlibs/jlayer/1.0.1.4/b8df07ad72b482f7d6e6dee7fed669385e8dd92f/jlayer-1.0.1.4.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/junit/junit/3.8.2/7e4cde26b53a9a0e3fe5b00d1dbbc7cc1d46060/junit-3.8.2.jar
@@ -38,7 +40,7 @@
 /home/nano/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/ea1b37f38c327596b216542bc636cfdc0b8036fa/log4j-api-2.19.0.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/org.jline/jline-reader/3.20.0/8f15415b022a25b473e8e16c28ae913186ffb9c4/jline-reader-3.20.0.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.20.0/d0ddcc708ddf527a3454c941b7b9225cc83a15ff/jline-terminal-3.20.0.jar
-/home/nano/.gradle/caches/modules-2/files-2.1/dev.architectury/mixin-patched/0.8.5.10/a8cf27a2274cbb5030707cf66df222a766435a4/mixin-patched-0.8.5.10.jar
+/home/nano/.gradle/caches/modules-2/files-2.1/dev.architectury/mixin-patched/0.8.5.11/dd886ad7af30604cbd9aa0f1eb9fb95b079013ca/mixin-patched-0.8.5.11.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020/JarJarFileSystems-0.3.19.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar
 /home/nano/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/832b8e6674a9b325a5175a3a6267dfaf34c85139/logging-1.1.1.jar
