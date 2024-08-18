@@ -16,9 +16,12 @@ out
 # gradle
 build
 .gradle
+common/build
+common/.gradle
 
 forge/build
 forge/.gradle
+forge/run
 
 # other
 eclipse

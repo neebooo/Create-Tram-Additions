@@ -10,6 +10,8 @@ import hu.qliqs.TramAdditions.forge.blocks.ModBlocks;
 import hu.qliqs.TramAdditions.forge.items.ModCreativeModeTabs;
 import hu.qliqs.TramAdditions.forge.items.ModItems;
 import hu.qliqs.TramAdditions.mixin_interfaces.TrainACInterface;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -106,6 +108,14 @@ public final class TramAdditions {
         }
     }
 
+    public static boolean isWaypointing(Train train){
+        if (train == null || train.runtime == null || train.runtime.getSchedule() == null ){
+            return false;
+        }
+
+        return Objects.equals(train.runtime.getSchedule().entries.get(train.runtime.currentEntry).instruction.getId(), new ResourceLocation("railways", "waypoint_destination"));
+    }
+
 
     public static void onWorldTick() {
         Create.RAILWAYS.trains.values().forEach(train -> {
@@ -117,8 +127,15 @@ public final class TramAdditions {
                 hasAnnouncedCurrentStation.put(train.id, false);
             }
 
-            if (train.getCurrentStation() == null) {
-                hasAnnouncedCurrentStation.replace(train.id, false);
+            /*
+            if (isWaypointing(train)) {
+                return;
+            }
+            This might work tho I have to test and I am lazy :3
+             */
+
+            if (train.getCurrentStation() == null && !isWaypointing(train)) {
+                hasAnnouncedCurrentStation.replace(train.id,false);
                 if (train.navigation.destination != null && !hasAnnouncedNextStation.get(train.id)) {
                     train.carriages.forEach(carriage -> {
                         carriage.forEachPresentEntity(entity -> {
@@ -136,7 +153,7 @@ public final class TramAdditions {
                     hasAnnouncedNextStation.replace(train.id, true);
                 }
             } else {
-                if (!hasAnnouncedCurrentStation.get(train.id)) {
+                if (!hasAnnouncedCurrentStation.get(train.id) && !isWaypointing(train)) {
                     train.carriages.forEach(carriage -> {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {

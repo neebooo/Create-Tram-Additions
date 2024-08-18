@@ -40,12 +40,14 @@ dependencies {
     modImplementation("com.tterrag.registrate:Registrate:${rootProject.registrate_forge_version}")
     modImplementation("com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_forge_version}")
 
+
     implementation(forgeRuntimeLibrary("io.github.seth-yang:java-wrapper-for-edge-tts:1.0.1"))
     implementation(forgeRuntimeLibrary("com.googlecode.soundlibs:jlayer:1.0.1.4"))
     implementation(forgeRuntimeLibrary("org.java-websocket:Java-WebSocket:1.5.7"))
     include("io.github.seth-yang:java-wrapper-for-edge-tts:1.0.0")
     include("com.googlecode.soundlibs:jlayer:1.0.1.4")
     include("org.java-websocket:Java-WebSocket:1.5.7")
+
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
