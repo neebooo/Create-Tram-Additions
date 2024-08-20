@@ -113,6 +113,12 @@ public final class TramAdditions {
             return false;
         }
 
+
+        // Fix Crash
+        if (train.runtime.getSchedule().entries.size() <= train.runtime.currentEntry) {
+            return false;
+        }
+
         return Objects.equals(train.runtime.getSchedule().entries.get(train.runtime.currentEntry).instruction.getId(), new ResourceLocation("railways", "waypoint_destination"));
     }
 
