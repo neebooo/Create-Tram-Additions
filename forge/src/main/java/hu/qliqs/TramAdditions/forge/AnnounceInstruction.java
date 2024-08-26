@@ -35,7 +35,7 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
     @OnlyIn(Dist.CLIENT)
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         builder.addTextInput(0,101,(si, l) -> {
-            si.setMaxLength(300);
+            si.setMaxLength(300); // technically the max length is 32767 chars but I do not think anyone would realistically use that
         },"Message");
         builder.addSelectionScrollInput(102,35,(si,l) -> {
             l.getToolTip().add(Component.literal("Omit next stop announcement"));
@@ -62,12 +62,13 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
     public void execute(ScheduleRuntime runtime) {
         String finalMessage = processPlaceholders(textData("Message"), ((AccessorScheduleRuntime) runtime).getTrain());
         // Warning: True is 0, False is 1 in this case. Idk what im doing with my life but not something great
-        ((TrainACInterface)((AccessorScheduleRuntime) runtime).getTrain()).createTramAdditions$setOmitNextStopAnnouncement((intData("OmitNextMessage") == 0));
+        TrainACInterface train = (TrainACInterface) ((AccessorScheduleRuntime) runtime).getTrain();
+        train.createTramAdditions$setOmitNextStopAnnouncement((intData("OmitNextMessage") == 0));
         ((AccessorScheduleRuntime) runtime).getTrain().carriages.forEach(carriage -> {
             carriage.forEachPresentEntity(entity -> {
                 entity.getIndirectPassengers().forEach(p -> {
                     if (p instanceof Player) {
-                        ModMessages.sendToPlayer(new AnnouncePacket(finalMessage), (ServerPlayer) p);
+                        ModMessages.sendToPlayer(new AnnouncePacket(finalMessage,train.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
                     }
                 });
             });

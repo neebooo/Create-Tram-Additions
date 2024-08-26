@@ -6,6 +6,8 @@ import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Pair;
 import hu.qliqs.TramAdditions.ICustomExecutableInstruction;
 import hu.qliqs.TramAdditions.TramAdditions;
+import hu.qliqs.TramAdditions.mixin.AccessorScheduleRuntime;
+import hu.qliqs.TramAdditions.mixin_interfaces.TrainACInterface;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -52,6 +54,9 @@ public class SetLanguageInstruction extends ScheduleInstruction implements ICust
 
     @Override
     public void execute(ScheduleRuntime runtime) {
-
+        TrainACInterface train = (TrainACInterface) ((AccessorScheduleRuntime)runtime).getTrain();
+        train.createTramAdditions$setVoiceRole(VoiceRole.values()[intData("ttslanguage")].toString());
+        runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
+        runtime.currentEntry++;
     }
 }

@@ -21,17 +21,20 @@ import java.util.function.Supplier;
 
 public class AnnouncePacket {
     private final String message;
+    private final String language;
 
-    public AnnouncePacket(String message) {
+    public AnnouncePacket(String message, String voiceRole) {
         this.message = message;
+        this.language = voiceRole;
     }
 
     public static void encode(AnnouncePacket packet, FriendlyByteBuf buf) {
         buf.writeUtf(packet.message);
+        buf.writeUtf(packet.language);
     }
 
     public static AnnouncePacket decode(FriendlyByteBuf buf) {
-        return new AnnouncePacket(buf.readUtf(32767));
+        return new AnnouncePacket(buf.readUtf(32767),buf.readUtf(32767));
     }
 
     public static volatile Boolean doneAnnouncing = true;
@@ -55,6 +58,8 @@ public class AnnouncePacket {
             Thread.onSpinWait();
         }
         doneAnnouncing = false;
+
+        TramAdditions.getTTS().config().voice(VoiceRole.valueOf(packet.language));
 
         TramAdditions.getTTS().synthesis(packet.message);
         doneAnnouncing = true;

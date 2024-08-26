@@ -33,4 +33,12 @@ public class MixinTrainAdditionalContext implements TrainACInterface {
         createTramAdditions$omitNextStopAnnouncement = value;
     }
 
+    @Unique
+    public String createTramAdditions$voiceRole = "Sonia";
+
+    @Unique
+    public String createTramAdditions$getVoiceRole() {return createTramAdditions$voiceRole;}
+
+    @Unique
+    public void createTramAdditions$setVoiceRole(String voiceRole) {createTramAdditions$voiceRole = voiceRole;}
 }

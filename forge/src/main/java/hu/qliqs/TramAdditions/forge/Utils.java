@@ -1,30 +1,27 @@
 package hu.qliqs.TramAdditions.forge;
 
 import com.mojang.logging.LogUtils;
+import hu.qliqs.TramAdditions.TramAdditions;
+import net.minecraft.resources.ResourceLocation;
+import org.dreamwork.tools.tts.VoiceRole;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+import java.util.Map;
 
 public class Utils {
-    public static void playAudio(AudioInputStream audio) {
-        try {
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, audio.getFormat());
-            SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-            line.open(audio.getFormat());
-            line.start();
-
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = audio.read(buffer, 0, buffer.length)) != -1) {
-                line.write(buffer, 0, bytesRead);
+    public static String getServerLocale(String locale_code, String key) {
+        Map<String, String> translations = TramAdditions.translationMapServer.get(locale_code);
+        if (translations != null) {
+            String translated = translations.get(key);
+            if (translated != null) {
+                return translated;
             }
-
-            line.drain();
-            line.close();
-        } catch (Exception e) {
-            LogUtils.getLogger().error(e.getMessage());
+        } else {
+            getServerLocale("en-us",key);
         }
+        return "";
     }
 }

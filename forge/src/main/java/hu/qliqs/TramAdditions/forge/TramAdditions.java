@@ -13,6 +13,9 @@ import hu.qliqs.TramAdditions.forge.items.ModCreativeModeTabs;
 import hu.qliqs.TramAdditions.forge.items.ModItems;
 import hu.qliqs.TramAdditions.mixin_interfaces.TrainACInterface;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.LanguageManager;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +26,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.server.command.TextComponentHelper;
 import org.dreamwork.tools.tts.ITTSListener;
 import org.dreamwork.tools.tts.TTS;
 import org.dreamwork.tools.tts.VoiceRole;
@@ -139,6 +143,8 @@ public final class TramAdditions {
             This might work tho I have to test and I am lazy :3
              */
 
+            TrainACInterface trainACI = (TrainACInterface) train;
+
             if (train.getCurrentStation() == null && !isWaypointing(train)) {
                 hasAnnouncedCurrentStation.replace(train.id,false);
                 if (train.navigation.destination != null && !hasAnnouncedNextStation.get(train.id)) {
@@ -150,7 +156,7 @@ public final class TramAdditions {
                                     if (msg.isEmpty()) {
                                         return;
                                     }
-                                    ModMessages.sendToPlayer(new AnnouncePacket(msg), (ServerPlayer) p);
+                                    ModMessages.sendToPlayer(new AnnouncePacket(msg,trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
                                 }
                             });
                         });
@@ -167,7 +173,7 @@ public final class TramAdditions {
                                     if (msg.isEmpty()) {
                                         return;
                                     }
-                                    ModMessages.sendToPlayer(new AnnouncePacket(msg), (ServerPlayer) p);
+                                    ModMessages.sendToPlayer(new AnnouncePacket(msg, trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
                                 }
                             });
                         });
@@ -180,17 +186,17 @@ public final class TramAdditions {
     }
 
     public static String makeMessage(String stationName, Boolean arrived, Train train) {
-        /*
+        stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor(stationName).getAliasName().get();
         if (arrived) {
-            return "%s.".formatted(stationName.replaceAll("\\d+$", ""));
+            return "%s.".formatted(stationName);
         }
-        */
 
-        stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor("A").getAliasName().get();
 
 
         TrainACInterface trainAC = ((TrainACInterface) train);
 
+        String locale = VoiceRole.valueOf(trainAC.createTramAdditions$getVoiceRole()).locale.toLowerCase();
+        Utils.getServerLocale(locale,"next_station");
         if (trainAC.createTramAdditions$getOmitNextStopAnnouncement()) {
             trainAC.createTramAdditions$setOmitNextStopAnnouncement(false);
             return "";
@@ -198,9 +204,10 @@ public final class TramAdditions {
 
         String additionalString = "";
         if (!Objects.equals(trainAC.createTramAdditions$getChangeHereString(), "")) {
+            /* Discontinued soon so no translation */
             additionalString = "Change here for %s.".formatted(trainAC.createTramAdditions$getChangeHereString());
         }
         trainAC.createTramAdditions$setChangeHereString("");
-        return "The next station is %s.%s".formatted(stationName.replaceAll("\\d+$", ""), additionalString);
+        return "%s.%s".formatted(Utils.getServerLocale(locale,"next_station"),additionalString).formatted(stationName);
     }
 }
