@@ -186,7 +186,11 @@ public final class TramAdditions {
     }
 
     public static String makeMessage(String stationName, Boolean arrived, Train train) {
-        stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor(stationName).getAliasName().get();
+        try {
+            stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor(stationName).getAliasName().get();
+        } catch (NoClassDefFoundError e) {
+            // ignore since CRN is an optional dependency
+        }
         if (arrived) {
             return "%s.".formatted(stationName);
         }

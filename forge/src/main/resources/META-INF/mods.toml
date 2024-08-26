@@ -40,3 +40,10 @@ mandatory=true
 versionRange="[0.5.1.f,)"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.create_tram_additions]]
+modId="createrailwaysnavigator"
+mandatory = false
+versionRange = "[1.20.1-0.5.5,)"
+ordering="NONE"
+side="BOTH"

@@ -20,7 +20,7 @@ public class Utils {
                 return translated;
             }
         } else {
-            getServerLocale("en-us",key);
+            return getServerLocale("en-us",key); // For untranslated languages and stuff like en-gb
         }
         return "";
     }
