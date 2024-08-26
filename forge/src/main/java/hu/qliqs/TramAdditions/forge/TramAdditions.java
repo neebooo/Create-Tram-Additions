@@ -2,6 +2,8 @@ package hu.qliqs.TramAdditions.forge;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
+import de.mrjulsen.crn.CreateRailwaysNavigator;
+import de.mrjulsen.crn.data.GlobalSettingsManager;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.forge.EventBuses;
 import hu.qliqs.TramAdditions.forge.Network.ModMessages;
@@ -28,10 +30,7 @@ import org.java_websocket.client.WebSocketClient;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Mod(hu.qliqs.TramAdditions.TramAdditions.MOD_ID)
@@ -181,9 +180,14 @@ public final class TramAdditions {
     }
 
     public static String makeMessage(String stationName, Boolean arrived, Train train) {
+        /*
         if (arrived) {
             return "%s.".formatted(stationName.replaceAll("\\d+$", ""));
         }
+        */
+
+        stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor("A").getAliasName().get();
+
 
         TrainACInterface trainAC = ((TrainACInterface) train);
 
