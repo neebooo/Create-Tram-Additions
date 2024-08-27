@@ -31,6 +31,10 @@ public final class TramAdditions {
             "hu-hu", Map.of(
                     "next_station", "A következő megálló %s",
                     "line_to", "Ez a %s, %s fele"
+            ),
+            "pl-pl", Map.of(
+                    "next_station", "Następny przystanek %s",
+                    "line_to", "Linia %s, kierunek %s"
             )
     );
 
