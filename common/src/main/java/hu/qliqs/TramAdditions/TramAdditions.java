@@ -35,6 +35,14 @@ public final class TramAdditions {
             "pl-pl", Map.of(
                     "next_station", "Następny przystanek %s",
                     "line_to", "Linia %s, kierunek %s"
+            ),
+            "nl-nl", Map.of(
+                    "next_station", "Het volgende station is %s",
+                    "line_to", "Dit is %s richting %s"
+            ),
+            "es-es", Map.of(
+                    "next_station","Próxima estación: %s",
+                    "line_to", "Esta es la línea %s a %s"
             )
     );
 

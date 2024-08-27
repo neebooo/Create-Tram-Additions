@@ -136,13 +136,6 @@ public final class TramAdditions {
                 hasAnnouncedCurrentStation.put(train.id, false);
             }
 
-            /*
-            if (isWaypointing(train)) {
-                return;
-            }
-            This might work tho I have to test and I am lazy :3
-             */
-
             TrainACInterface trainACI = (TrainACInterface) train;
 
             if (train.getCurrentStation() == null && !isWaypointing(train)) {

@@ -3,5 +3,5 @@
   "create_tram_additions.schedule.instruction.nextstationinfo": "Información de la Próxima Estación",
   "create_tram_additions.schedule.instruction.setlanguage": "Elegir Idioma del Locutor",
   "creativetab.tram_additions_tab": "Adiciones del Tranvía",
-  "block.create_tram_additions.floor_block": "Bloque del Piso"
+  "block.create_tram_additions.floor_block": "Floor Block"
 }
