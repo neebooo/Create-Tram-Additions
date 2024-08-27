@@ -39,7 +39,7 @@ public class SetLanguageInstruction extends ScheduleInstruction implements ICust
 
     @Override
     public boolean supportsConditions() {
-        return true;
+        return false;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
 
     @Override
     public boolean supportsConditions() {
-        return true;
+        return false;
     }
 
     @Override

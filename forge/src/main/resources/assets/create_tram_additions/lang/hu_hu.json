@@ -1,0 +1,7 @@
+{
+  "create_tram_additions.schedule.instruction.announcemessage": "Üzenet bemondása",
+  "create_tram_additions.schedule.instruction.nextstationinfo": "Következő megálló infó",
+  "create_tram_additions.schedule.instruction.setlanguage": "Bemondó nyelv kiválasztása",
+  "creativetab.tram_additions_tab": "Tram Additions",
+  "block.create_tram_additions.floor_block": "Padló Block"
+}
