@@ -44,6 +44,7 @@ dependencies {
     modLocalRuntime("maven.modrinth:create-railways-navigator:mQxmHtke")
     modImplementation("maven.modrinth:create-railways-navigator:mQxmHtke")
 
+
     implementation(forgeRuntimeLibrary("io.github.seth-yang:java-wrapper-for-edge-tts:1.0.1"))
     implementation(forgeRuntimeLibrary("com.googlecode.soundlibs:jlayer:1.0.1.4"))
     implementation(forgeRuntimeLibrary("org.java-websocket:Java-WebSocket:1.5.7"))
@@ -51,6 +52,18 @@ dependencies {
     include("com.googlecode.soundlibs:jlayer:1.0.1.4")
     include("org.java-websocket:Java-WebSocket:1.5.7")
 
+    // DragNSound
+    modLocalRuntime("de.mrjulsen.dragnsounds:dragnsounds-forge:${rootProject.minecraft_version}-${rootProject.dragnsounds_version}")
+    modImplementation("de.mrjulsen.dragnsounds:dragnsounds-forge:${rootProject.minecraft_version}-${rootProject.dragnsounds_version}")
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-core:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux32:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux64:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux-arm32:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux-arm64:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-win32:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-win64:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-osxm1:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-osx64:${rootProject.jave_version}"))
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
