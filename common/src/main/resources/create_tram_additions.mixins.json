@@ -8,7 +8,8 @@
   "mixins": [
     "AccessorScheduleRuntime",
     "MixinScheduleRuntime",
-    "MixinTrainAdditionalContext"
+    "MixinTrainAdditionalContext",
+    "RenderCoupling"
   ],
   "injectors": {
     "defaultRequire": 1

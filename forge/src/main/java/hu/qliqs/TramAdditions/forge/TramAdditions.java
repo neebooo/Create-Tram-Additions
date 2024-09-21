@@ -1,8 +1,8 @@
 package hu.qliqs.TramAdditions.forge;
 
+import com.google.common.eventbus.Subscribe;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
-import de.mrjulsen.crn.CreateRailwaysNavigator;
 import de.mrjulsen.crn.data.GlobalSettingsManager;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.forge.EventBuses;
@@ -12,22 +12,18 @@ import hu.qliqs.TramAdditions.forge.blocks.ModBlocks;
 import hu.qliqs.TramAdditions.forge.items.ModCreativeModeTabs;
 import hu.qliqs.TramAdditions.forge.items.ModItems;
 import hu.qliqs.TramAdditions.mixin_interfaces.TrainACInterface;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.LanguageManager;
-import net.minecraft.locale.Language;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.server.command.TextComponentHelper;
-import org.dreamwork.tools.tts.ITTSListener;
 import org.dreamwork.tools.tts.TTS;
 import org.dreamwork.tools.tts.VoiceRole;
 import org.java_websocket.client.WebSocketClient;
@@ -35,7 +31,6 @@ import org.java_websocket.client.WebSocketClient;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Mod(hu.qliqs.TramAdditions.TramAdditions.MOD_ID)
 public final class TramAdditions {
@@ -44,6 +39,13 @@ public final class TramAdditions {
     public static Map<UUID, Boolean> hasAnnouncedCurrentStation = new HashMap<>();
 
     public static TTS tts = null;
+
+    public static ForgeConfigSpec.BooleanValue renderCoupling;
+
+    public static void registerClientConfig(ForgeConfigSpec.Builder CLIENT_BUILDER) {
+        CLIENT_BUILDER.comment("Render Settings").push("render");
+        renderCoupling = CLIENT_BUILDER.comment("Choose to render the cable between the carriages or not (Useful for low floored trams)").define("Render Couplings",true);
+    }
 
     public static boolean isTTSShutDown() {
         Field declaredField = null;
@@ -81,12 +83,13 @@ public final class TramAdditions {
         IEventBus modEventBus = EventBuses.getModEventBus(hu.qliqs.TramAdditions.TramAdditions.MOD_ID).get();
 
         ModCreativeModeTabs.register(modEventBus);
-
+        Config.register();
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
 
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::onConfigChange);
 
         MinecraftForge.EVENT_BUS.register(this);
         hu.qliqs.TramAdditions.TramAdditions.init();
@@ -95,7 +98,6 @@ public final class TramAdditions {
     private void commonSetup(final FMLCommonSetupEvent e) {
         e.enqueueWork(() -> {
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("announcemessage", AnnounceInstruction::new);
-            hu.qliqs.TramAdditions.TramAdditions.registerInstruction("nextstationinfo", NextStationInstruction::new);
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("setlanguage", SetLanguageInstruction::new);
             TickEvent.SERVER_PRE.register((listener) -> {
                 onWorldTick();
@@ -125,6 +127,10 @@ public final class TramAdditions {
         return Objects.equals(train.runtime.getSchedule().entries.get(train.runtime.currentEntry).instruction.getId(), new ResourceLocation("railways", "waypoint_destination"));
     }
 
+    @Subscribe
+    public void onConfigChange(ModConfigEvent modConfigEvent) {
+        hu.qliqs.TramAdditions.TramAdditions.RENDER_COUPLING = renderCoupling.get();
+    }
 
     public static void onWorldTick() {
         Create.RAILWAYS.trains.values().forEach(train -> {
@@ -182,7 +188,7 @@ public final class TramAdditions {
         try {
             stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor(stationName).getAliasName().get();
         } catch (NoClassDefFoundError e) {
-            // ignore since CRN is an optional dependency
+            // ignore the error since CRN is an optional dependency
         }
         if (arrived) {
             return "%s.".formatted(stationName);
@@ -199,12 +205,6 @@ public final class TramAdditions {
             return "";
         }
 
-        String additionalString = "";
-        if (!Objects.equals(trainAC.createTramAdditions$getChangeHereString(), "")) {
-            /* Discontinued soon so no translation */
-            additionalString = "Change here for %s.".formatted(trainAC.createTramAdditions$getChangeHereString());
-        }
-        trainAC.createTramAdditions$setChangeHereString("");
-        return "%s.%s".formatted(Utils.getServerLocale(locale,"next_station"),additionalString).formatted(stationName);
+        return "%s.".formatted(Utils.getServerLocale(locale,"next_station")).formatted(stationName);
     }
 }

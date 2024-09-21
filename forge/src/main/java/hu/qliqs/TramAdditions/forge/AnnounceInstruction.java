@@ -35,7 +35,7 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
     @OnlyIn(Dist.CLIENT)
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         builder.addTextInput(0,101,(si, l) -> {
-            si.setMaxLength(300); // technically the max length is 32767 chars but I do not think anyone would realistically use that
+            si.setMaxLength(1000); // technically the max length is 32767 chars, but I do not think anyone would realistically use that
         },"Message");
         builder.addSelectionScrollInput(102,35,(si,l) -> {
             l.getToolTip().add(Component.literal("Omit next stop announcement"));

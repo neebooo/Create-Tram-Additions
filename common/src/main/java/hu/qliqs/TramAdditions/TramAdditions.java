@@ -15,6 +15,8 @@ public final class TramAdditions {
     public static final String MOD_ID = "create_tram_additions";
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
 
+    public static boolean RENDER_COUPLING;
+
     public static final Map<String, Map<String, String>> translationMapServer = Map.of( // This is not possible to put in a normal resource file because the server can't access it!
             "en-us", Map.of(
                     "next_station", "The next station is %s",
@@ -51,7 +53,6 @@ public final class TramAdditions {
     );
 
     public static void init() {
-        // Write common init code here.
     }
 
     public static void registerInstruction(String name, Supplier<? extends ScheduleInstruction> factory) {
