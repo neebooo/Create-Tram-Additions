@@ -60,7 +60,7 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
 
     @Override
     public void execute(ScheduleRuntime runtime) {
-        String finalMessage = processPlaceholders(textData("Message"), ((AccessorScheduleRuntime) runtime).getTrain());
+        String finalMessage = hu.qliqs.TramAdditions.forge.TramAdditions.formatMessage(textData("Message"), ((AccessorScheduleRuntime) runtime).getTrain());
         // Warning: True is 0, False is 1 in this case. Idk what im doing with my life but not something great
         TrainACInterface train = (TrainACInterface) ((AccessorScheduleRuntime) runtime).getTrain();
         train.createTramAdditions$setOmitNextStopAnnouncement((intData("OmitNextMessage") == 0));
@@ -77,10 +77,6 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
         runtime.currentEntry++;
     }
 
-    private String processPlaceholders(String message, Train train) {
-        return message.replaceAll("%next_stop%",getNextStop(train)).replaceAll("%current_stop%",getCurrentStop(train));
-    }
-
     private String getCurrentStop(Train train ){
         Schedule schedule = train.runtime.getSchedule();
         if (train.getCurrentStation() == null ){
@@ -95,7 +91,7 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
         return train.getCurrentStation().name;
     }
 
-    private String getNextStop(Train train) {
+    public static String getNextStop(Train train) {
         Schedule schedule = train.runtime.getSchedule();
         int startIndex = train.runtime.currentEntry;
         for (int i = startIndex; i < schedule.entries.size(); i++) {

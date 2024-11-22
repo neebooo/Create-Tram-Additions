@@ -2,6 +2,8 @@
   "create_tram_additions.schedule.instruction.announcemessage": "Announce Message",
   "create_tram_additions.schedule.instruction.nextstationinfo": "Next Station Info",
   "create_tram_additions.schedule.instruction.setlanguage": "Set Announcer Language",
+  "create_tram_additions.schedule.instruction.setdefaultnextstopannouncement": "Set default next stop announcement",
   "creativetab.tram_additions_tab": "Tram Additions",
-  "block.create_tram_additions.floor_block": "Floor Block"
+  "block.create_tram_additions.floor_block": "Floor Block",
+  "block.create_tram_additions.speaker_block": "Speaker Block"
 }

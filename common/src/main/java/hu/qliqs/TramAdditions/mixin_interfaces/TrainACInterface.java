@@ -5,4 +5,6 @@ public interface TrainACInterface {
     void createTramAdditions$setOmitNextStopAnnouncement(boolean value);
     String createTramAdditions$getVoiceRole();
     void createTramAdditions$setVoiceRole(String voiceRole);
+    String createTramAdditions$getDefaultNextStopAnnouncement();
+    void createTramAdditions$setDefaultNextStopAnnouncement(String announcement);
 }

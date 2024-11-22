@@ -41,4 +41,17 @@ public class MixinTrainAdditionalContext implements TrainACInterface {
 
     @Unique
     public void createTramAdditions$setVoiceRole(String voiceRole) {createTramAdditions$voiceRole = voiceRole;}
+
+    @Unique
+    public String createTramAdditions$defaultNextStopAnnouncement = "The next stop is ${next_stop}.";
+
+    @Override
+    public String createTramAdditions$getDefaultNextStopAnnouncement() {
+        return createTramAdditions$defaultNextStopAnnouncement;
+    }
+
+    @Override
+    public void createTramAdditions$setDefaultNextStopAnnouncement(String announcement) {
+        createTramAdditions$defaultNextStopAnnouncement = announcement;
+    }
 }

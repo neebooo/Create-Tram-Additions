@@ -3,7 +3,14 @@ package hu.qliqs.TramAdditions.forge;
 import com.google.common.eventbus.Subscribe;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
-import de.mrjulsen.crn.data.GlobalSettingsManager;
+import com.simibubi.create.content.trains.station.GlobalStation;
+import de.mrjulsen.crn.data.StationTag;
+import de.mrjulsen.crn.data.TrainExitSide;
+import de.mrjulsen.crn.data.TrainGroup;
+import de.mrjulsen.crn.data.TrainLine;
+import de.mrjulsen.crn.data.storage.GlobalSettings;
+import de.mrjulsen.crn.data.train.TrainListener;
+import de.mrjulsen.crn.data.train.TrainUtils;
 import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.platform.forge.EventBuses;
 import hu.qliqs.TramAdditions.forge.Network.ModMessages;
@@ -24,13 +31,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.dreamwork.tools.tts.TTS;
-import org.dreamwork.tools.tts.VoiceRole;
 import org.java_websocket.client.WebSocketClient;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Mod(hu.qliqs.TramAdditions.TramAdditions.MOD_ID)
 public final class TramAdditions {
@@ -38,42 +44,17 @@ public final class TramAdditions {
     public static Map<UUID, Boolean> hasAnnouncedNextStation = new HashMap<>();
     public static Map<UUID, Boolean> hasAnnouncedCurrentStation = new HashMap<>();
 
-    public static TTS tts = null;
-
     public static ForgeConfigSpec.BooleanValue renderCoupling;
+    public static ForgeConfigSpec.ConfigValue<String> apiEndpoint;
 
     public static void registerClientConfig(ForgeConfigSpec.Builder CLIENT_BUILDER) {
         CLIENT_BUILDER.comment("Render Settings").push("render");
         renderCoupling = CLIENT_BUILDER.comment("Choose to render the cable between the carriages or not (Useful for low floored trams)").define("Render Couplings",true);
     }
 
-    public static boolean isTTSShutDown() {
-        Field declaredField = null;
-        try {
-            declaredField = tts.getClass().getDeclaredField("client");
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-        declaredField.setAccessible(true);
-        try {
-            WebSocketClient client = (WebSocketClient) declaredField.get(tts);
-            return client == null;
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static TTS getTTS() {
-            if (tts == null || isTTSShutDown()) {
-                try {
-                    tts = new TTS();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                tts.config()
-                        .voice(VoiceRole.Sonia);
-            }
-            return tts;
+    public static void registerServerConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
+        SERVER_BUILDER.comment("TTS Settings").push("tts-server");
+        apiEndpoint = SERVER_BUILDER.comment("The API endpoint for the TTS to get the voice from.").define("TTS Endpoint","https://neebooo.is-a.dev");
     }
 
     public TramAdditions() {
@@ -99,6 +80,7 @@ public final class TramAdditions {
         e.enqueueWork(() -> {
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("announcemessage", AnnounceInstruction::new);
             hu.qliqs.TramAdditions.TramAdditions.registerInstruction("setlanguage", SetLanguageInstruction::new);
+            hu.qliqs.TramAdditions.TramAdditions.registerInstruction("setdefaultnextstopannouncement",SetDefaultNextStopAnnouncement::new);
             TickEvent.SERVER_PRE.register((listener) -> {
                 onWorldTick();
             });
@@ -151,7 +133,7 @@ public final class TramAdditions {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {
                                 if (p instanceof Player) {
-                                    String msg = makeMessage(train.navigation.destination.name, false, train);
+                                    String msg = makeMessage(train.navigation.destination.id, train.navigation.destination.name, false, train);
                                     if (msg.isEmpty()) {
                                         return;
                                     }
@@ -168,7 +150,7 @@ public final class TramAdditions {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {
                                 if (p instanceof Player) {
-                                    String msg = makeMessage(train.getCurrentStation().name, true, train);
+                                    String msg = makeMessage(train.getCurrentStation().id, train.getCurrentStation().name, true, train);
                                     if (msg.isEmpty()) {
                                         return;
                                     }
@@ -184,27 +166,75 @@ public final class TramAdditions {
         });
     }
 
-    public static String makeMessage(String stationName, Boolean arrived, Train train) {
-        try {
-            stationName = GlobalSettingsManager.getInstance().getSettingsData().getAliasFor(stationName).getAliasName().get();
-        } catch (NoClassDefFoundError e) {
-            // ignore the error since CRN is an optional dependency
+    public static String stationNameToTag(String stationName) throws NoClassDefFoundError {
+        return GlobalSettings.getInstance().getOrCreateStationTagFor(stationName).getTagName().get();
+    }
+
+    public static String uuidToLine(UUID uuid,int scheduleIndex) {
+        TrainLine trainLine = TrainListener.data.get(uuid).getTrainInfo(scheduleIndex).line();
+        if (trainLine == null) {
+            return "Unknown";
         }
+        return trainLine.getLineName();
+    }
+
+    public static String uuidToGroup(UUID uuid,int scheduleIndex) {
+        TrainGroup trainGroup = TrainListener.data.get(uuid).getTrainInfo(scheduleIndex).group();
+        if (trainGroup == null) {
+            return "Unknown";
+        }
+        return trainGroup.getGroupName();
+    }
+
+    public static String getDoorSide(Train train) {
+        // Next stop
+        GlobalStation nextStation = train.navigation.destination;
+        if (nextStation == null) {
+            return "Unknown";
+        }
+
+        return TrainUtils.getExitSide(nextStation).name();
+    }
+
+    public static String makeStationName(String stationName) {
+        try {
+            stationName = stationNameToTag(stationName);
+        } catch (NoClassDefFoundError ignored) {}
+        return stationName;
+    }
+
+    public static String formatMessage(String message,Train train) {
+        if (train.id == null || train.runtime == null || train.runtime.getSchedule() == null){
+            return message;
+        }
+
+        String next_stop = AnnounceInstruction.getNextStop(train);
+
+        message = message.replaceAll(Pattern.quote("${next_stop}"), makeStationName(next_stop));
+        try {
+            message = message.replaceAll(Pattern.quote("${line}"), uuidToLine(train.id,train.runtime.getSchedule().savedProgress));
+            message = message.replaceAll(Pattern.quote("${group}"),uuidToGroup(train.id,train.runtime.getSchedule().savedProgress));
+            // message = message.replaceAll(Pattern.quote("${door_side}"), getDoorSide(train));
+        } catch (NoClassDefFoundError ignored) {}
+
+        return message;
+    }
+
+    public static String makeMessage(UUID stationUUID, String stationName, Boolean arrived, Train train) {
+
+        stationName = makeStationName(stationName);
+
         if (arrived) {
             return "%s.".formatted(stationName);
         }
 
-
-
         TrainACInterface trainAC = ((TrainACInterface) train);
 
-        String locale = VoiceRole.valueOf(trainAC.createTramAdditions$getVoiceRole()).locale.toLowerCase();
-        Utils.getServerLocale(locale,"next_station");
         if (trainAC.createTramAdditions$getOmitNextStopAnnouncement()) {
             trainAC.createTramAdditions$setOmitNextStopAnnouncement(false);
             return "";
         }
 
-        return "%s.".formatted(Utils.getServerLocale(locale,"next_station")).formatted(stationName);
+        return formatMessage(trainAC.createTramAdditions$getDefaultNextStopAnnouncement(), train);
     }
 }

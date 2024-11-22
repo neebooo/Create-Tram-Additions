@@ -2,21 +2,19 @@ package hu.qliqs.TramAdditions.forge.Network.Packets;
 
 import hu.qliqs.TramAdditions.forge.TramAdditions;
 import hu.qliqs.TramAdditions.forge.Utils;
-import javazoom.jl.converter.Converter;
-import javazoom.jl.decoder.JavaLayerException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import org.dreamwork.tools.tts.TTS;
-import org.dreamwork.tools.tts.VoiceRole;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Random;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Supplier;
 
 public class AnnouncePacket {
@@ -46,7 +44,8 @@ public class AnnouncePacket {
             try {
                 handleThreaded(packet);
             } catch (IOException | UnsupportedAudioFileException | InterruptedException e) {
-                throw new RuntimeException(e);
+                // throw new RuntimeException(e);
+                // Ignore
             }
         });
         thread.start();
@@ -58,10 +57,13 @@ public class AnnouncePacket {
             Thread.onSpinWait();
         }
         doneAnnouncing = false;
-
-        TramAdditions.getTTS().config().voice(VoiceRole.valueOf(packet.language));
-
-        TramAdditions.getTTS().synthesis(packet.message);
+        URL url = new URL(TramAdditions.apiEndpoint.get() + "/?text=%s&lang=%s".formatted(URLEncoder.encode(packet.message, StandardCharsets.UTF_8),URLEncoder.encode(packet.language,StandardCharsets.UTF_8)));
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        InputStream inputStream = con.getInputStream();
+        InputStream bufferedIn = new BufferedInputStream(inputStream);
+        AudioInputStream ais = AudioSystem.getAudioInputStream(bufferedIn);
+        Utils.playAudio(ais);
         doneAnnouncing = true;
     }
 }

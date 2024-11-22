@@ -15,20 +15,19 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.ArrayList;
-
-public class SetLanguageInstruction extends ScheduleInstruction implements ICustomExecutableInstruction {
-    public SetLanguageInstruction() {
-        data.putString("ttslanguage", "");
+public class SetDefaultNextStopAnnouncement extends ScheduleInstruction implements ICustomExecutableInstruction {
+    public SetDefaultNextStopAnnouncement() {
+        data.putString("announcement","");
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public void initConfigurationWidgets(ModularGuiLineBuilder builder) {
         builder.addTextInput(0,101,(si, l) -> {
-            si.setMaxLength(50); // technically the max length is 32767 chars, but I do not think anyone would realistically use that
-        },"ttslanguage");
+            si.setMaxLength(1000); // technically the max length is 32767 chars, but I do not think anyone would realistically use that
+        },"announcement");
     }
+
 
     @Override
     public boolean supportsConditions() {
@@ -37,18 +36,18 @@ public class SetLanguageInstruction extends ScheduleInstruction implements ICust
 
     @Override
     public Pair<ItemStack, Component> getSummary() {
-        return Pair.of(new ItemStack(Items.PAPER), Component.literal("Set Announcer Language"));
+        return Pair.of(new ItemStack(Items.NOTE_BLOCK), Component.literal("Set default next stop announcement"));
     }
 
     @Override
     public ResourceLocation getId() {
-        return new ResourceLocation(TramAdditions.MOD_ID,"setlanguage");
+        return new ResourceLocation(TramAdditions.MOD_ID,"setdefaultnextstopannouncement");
     }
 
     @Override
     public void execute(ScheduleRuntime runtime) {
         TrainACInterface train = (TrainACInterface) ((AccessorScheduleRuntime)runtime).getTrain();
-        train.createTramAdditions$setVoiceRole(textData("ttslanguage"));
+        train.createTramAdditions$setDefaultNextStopAnnouncement(textData("announcement"));
         runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
         runtime.currentEntry++;
     }

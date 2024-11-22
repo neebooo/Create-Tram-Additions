@@ -19,7 +19,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.tram_additions_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModBlocks.floor_block.get());
-
+                        pOutput.accept(ModBlocks.floor_block.get());
                     })
                     .build());
 
