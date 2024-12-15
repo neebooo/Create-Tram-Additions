@@ -41,9 +41,9 @@ dependencies {
     modImplementation("com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_forge_version}")
     // modImplementation("maven.modrinth:create-steam-n-rails:1.6.5+forge-mc1.20.1")
 
-    modImplementation("de.mrjulsen.mcdragonlib:dragonlib-forge:${rootProject.minecraft_version}-${rootProject.dragonlib_version}")
-    modLocalRuntime("maven.modrinth:create-railways-navigator:kOUp11TX")
-    modImplementation("maven.modrinth:create-railways-navigator:kOUp11TX")
+    modCompileOnlyApi("de.mrjulsen.mcdragonlib:dragonlib-forge:${rootProject.minecraft_version}-${rootProject.dragonlib_version}")
+    modLocalRuntime("maven.modrinth:create-railways-navigator:9ptcjVtR")
+    modImplementation("maven.modrinth:create-railways-navigator:9ptcjVtR")
 
     implementation(forgeRuntimeLibrary("com.googlecode.soundlibs:jlayer:1.0.1.4"))
     implementation(forgeRuntimeLibrary("org.java-websocket:Java-WebSocket:1.5.7"))
