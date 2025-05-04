@@ -1,0 +1,8 @@
+{
+  "tram_additions.schedule.instruction.announcemessage": "Anunciar el mensaje",
+  "tram_additions.schedule.instruction.nextstationinfo": "Información de la próxima parada",
+  "tram_additions.schedule.instruction.setlanguage": "Elegir idioma del locutor",
+  "creativetab.tram_additions_tab": "Create Tram Additions",
+  "block.tram_additions.floor_block": "Suelo de tren",
+  "tram_additions.schedule.instruction.setdefaultnextstopannouncement": "Establecer el aviso de próxima parada predeterminado"
+}

@@ -1,0 +1,7 @@
+{
+  "tram_additions.schedule.instruction.announcemessage": "Inhalt der Ansage",
+  "tram_additions.schedule.instruction.nextstationinfo": "nächste Stations Info",
+  "tram_additions.schedule.instruction.setlanguage": "Ansagen Sprache",
+  "creativetab.tram_additions_tab": "Tram Additions",
+  "block.tram_additions.floor_block": "Boden Block"
+}

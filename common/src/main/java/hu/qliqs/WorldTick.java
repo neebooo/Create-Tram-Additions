@@ -1,0 +1,92 @@
+package hu.qliqs;
+
+import com.mojang.logging.LogUtils;
+import com.simibubi.create.Create;
+import hu.qliqs.mixin_interfaces.TrainACInterface;
+import hu.qliqs.networking.ModMessages;
+import hu.qliqs.networking.packets.AnnouncePacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+
+import static hu.qliqs.MessageMaker.makeMessage;
+import static hu.qliqs.TramAdditions.*;
+import static hu.qliqs.Utils.isWaypointing;
+
+public class WorldTick {
+    private static int tickCounter = 0;
+    public static void onWorldTick(MinecraftServer server) {
+        tickCounter++;
+        if (tickCounter >= 20) {
+            tickCounter = 0;
+
+            ServerLevel world = server.overworld();
+            long dayTime = world.getDayTime(); // Will be between 0 and 24000
+            long normalizedTime = (dayTime + 6000) % 24000; // Shifting to make 0 = 6:00 AM
+
+            int hours = (int)(normalizedTime / 1000);
+            int minutes = (int)((normalizedTime % 1000) * 60 / 1000);
+
+            String mcTime = String.format("%02d:%02d", hours, minutes); // formatted time
+
+            wsclient.send("SEND|ALL|false|TIME;%s".formatted(mcTime)); // Send time to everyone!!!
+        }
+        Create.RAILWAYS.trains.values().forEach(train -> {
+            if (!hasAnnouncedNextStation.containsKey(train.id)) {
+                hasAnnouncedNextStation.put(train.id, false);
+            }
+
+            if (!hasAnnouncedCurrentStation.containsKey(train.id)) {
+                hasAnnouncedCurrentStation.put(train.id, false);
+            }
+
+            TrainACInterface trainACI;
+            try {
+                trainACI = (TrainACInterface) train;
+            } catch (ClassCastException cce) {
+                LogUtils.getLogger().error(cce.getMessage());
+                return;
+            }
+
+            if (train.getCurrentStation() == null && !isWaypointing(train)) {
+                hasAnnouncedCurrentStation.replace(train.id,false);
+                if (train.navigation.destination != null && !hasAnnouncedNextStation.get(train.id)) {
+                    train.carriages.forEach(carriage -> {
+                        carriage.forEachPresentEntity(entity -> {
+                            entity.getIndirectPassengers().forEach(p -> {
+                                if (p instanceof Player) {
+                                    String msg = makeMessage(train.navigation.destination.id, train.navigation.destination.name, false, train);
+                                    if (msg.isEmpty()) {
+                                        return;
+                                    }
+                                    ModMessages.sendToPlayer(new AnnouncePacket(msg,trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
+                                }
+                            });
+                        });
+                    });
+                    hasAnnouncedNextStation.replace(train.id, true);
+                }
+            } else {
+                if (!hasAnnouncedCurrentStation.get(train.id) && !isWaypointing(train)) {
+                    train.carriages.forEach(carriage -> {
+                        carriage.forEachPresentEntity(entity -> {
+                            entity.getIndirectPassengers().forEach(p -> {
+                                if (p instanceof Player) {
+                                    String msg = makeMessage(train.getCurrentStation().id, train.getCurrentStation().name, true, train);
+                                    if (msg.isEmpty()) {
+                                        return;
+                                    }
+                                    ModMessages.sendToPlayer(new AnnouncePacket(msg, trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
+                                }
+                            });
+                        });
+                    });
+                    hasAnnouncedCurrentStation.replace(train.id, true);
+                }
+                hasAnnouncedNextStation.replace(train.id, false);
+            }
+        });
+    }
+
+}
