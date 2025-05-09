@@ -45,6 +45,17 @@ subprojects {
                 includeGroup "curse.maven"
             }
         } // CRN
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Modrinth"
+                    url = "https://api.modrinth.com/maven"
+                }
+            }
+            filter {
+                includeGroup "maven.modrinth"
+            }
+        }
         maven { // DragonLib
             name = "MrJulsen's Mod Resources"
             url = "https://raw.githubusercontent.com/MisterJulsen/modsrepo/main/maven"

@@ -23,22 +23,9 @@ public class Utils {
         try {
             Clip clip = AudioSystem.getClip();
 
-            // Open audio clip and load samples from the audio input stream.
             clip.open(audioInputStream);
             clip.start();
-//            DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioInputStream.getFormat());
-//            SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-//            line.open(audioInputStream.getFormat());
-//            line.start();
-//
-//            byte[] buffer = new byte[1024];
-//            int bytesRead;
-//            while ((bytesRead = audioInputStream.read(buffer, 0, buffer.length)) != -1) {
-//                line.write(buffer, 0, bytesRead);
-//            }
-//
-//            line.drain();
-//            line.close();
+
         } catch (Exception e) {
             LogUtils.getLogger().error(e.getMessage());
         }

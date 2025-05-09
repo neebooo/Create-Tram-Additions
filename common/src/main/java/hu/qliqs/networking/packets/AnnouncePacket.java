@@ -3,6 +3,7 @@ package hu.qliqs.networking.packets;
 import hu.qliqs.Utils;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.network.FriendlyByteBuf;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;

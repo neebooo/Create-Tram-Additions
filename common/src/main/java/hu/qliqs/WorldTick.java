@@ -9,6 +9,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
+
+import java.net.URI;
 
 import static hu.qliqs.MessageMaker.makeMessage;
 import static hu.qliqs.TramAdditions.*;
@@ -16,6 +19,7 @@ import static hu.qliqs.Utils.isWaypointing;
 
 public class WorldTick {
     private static int tickCounter = 0;
+    private static int reconnectCounter = 0;
     public static void onWorldTick(MinecraftServer server) {
         tickCounter++;
         if (tickCounter >= 20) {
@@ -30,7 +34,17 @@ public class WorldTick {
 
             String mcTime = String.format("%02d:%02d", hours, minutes); // formatted time
 
-            wsclient.send("SEND|ALL|false|TIME;%s".formatted(mcTime)); // Send time to everyone!!!
+            try {
+                wsclient.send("SEND|ALL|false|TIME;%s".formatted(mcTime)); // Send time to everyone!!!
+            } catch (WebsocketNotConnectedException e) {
+                System.out.println("The server isn't connected to the proxy.");
+                reconnectCounter += 1;
+                if(reconnectCounter > 5) {
+                    reconnectCounter = 0;
+                    userPinMap.clear();
+                    wsclient = new WsClient(URI.create("wss://neebooo.is-a.dev/ws"));
+                }
+            }
         }
         Create.RAILWAYS.trains.values().forEach(train -> {
             if (!hasAnnouncedNextStation.containsKey(train.id)) {

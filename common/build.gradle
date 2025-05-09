@@ -13,7 +13,7 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${rootProject.minecraft_version}:${rootProject.create_fabric_version}")
     modImplementation("de.mrjulsen.mcdragonlib:dragonlib-fabric:${rootProject.minecraft_version}-${rootProject.dragonlib_version}")
-    modImplementation("curse.maven:create-railways-navigator-935929:6087006")
+    modImplementation("maven.modrinth:create-railways-navigator:CpoOlmEe")
     implementation("org.java-websocket:Java-WebSocket:1.6.0")
     include("org.java-websocket:Java-WebSocket:1.6.0")
 

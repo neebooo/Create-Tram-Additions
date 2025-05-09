@@ -1,13 +1,15 @@
 package hu.qliqs;
 
 import com.simibubi.create.content.trains.entity.Train;
-import de.mrjulsen.crn.data.TrainGroup;
+import de.mrjulsen.crn.data.TrainCategory;
 import de.mrjulsen.crn.data.TrainLine;
 import de.mrjulsen.crn.data.storage.GlobalSettings;
+import de.mrjulsen.crn.data.train.TrainData;
 import de.mrjulsen.crn.data.train.TrainListener;
 import hu.qliqs.instructions.AnnounceInstruction;
 import hu.qliqs.mixin_interfaces.*;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -17,7 +19,11 @@ public class MessageMaker {
     }
 
     public static String uuidToLine(UUID uuid,int scheduleIndex) {
-        TrainLine trainLine = TrainListener.data.get(uuid).getTrainInfo(scheduleIndex).line();
+        Optional<TrainData> td = TrainListener.getTrainData(uuid);
+        if(td.isEmpty()) {
+            return "Unknown";
+        }
+        TrainLine trainLine = td.get().getTrainInfo(scheduleIndex).line();
         if (trainLine == null) {
             return "Unknown";
         }
@@ -25,11 +31,15 @@ public class MessageMaker {
     }
 
     public static String uuidToGroup(UUID uuid,int scheduleIndex) {
-        TrainGroup trainGroup = TrainListener.data.get(uuid).getTrainInfo(scheduleIndex).group();
+        Optional<TrainData> td = TrainListener.getTrainData(uuid);
+        if(td.isEmpty()) {
+            return "Unknown";
+        }
+        TrainCategory trainGroup = td.get().getTrainInfo(scheduleIndex).category();
         if (trainGroup == null) {
             return "Unknown";
         }
-        return trainGroup.getGroupName();
+        return trainGroup.getCategoryName();
     }
 
     public static String makeStationName(String stationName) {

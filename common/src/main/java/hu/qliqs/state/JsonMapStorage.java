@@ -12,38 +12,47 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JsonMapStorage {
-    private static final Gson GSON = new Gson();
-    private static final Type MAP_TYPE = new TypeToken<Map<String, String>>() {}.getType();
-    private static Map<String, String> map = new HashMap<>();
+    private final Gson GSON = new Gson();
+    private final Type MAP_TYPE = new TypeToken<Map<String, String>>() {}.getType();
+    private Map<String, String> map = new HashMap<>();
+    private final ServerLevel world;
 
-    public static void load(ServerLevel world) {
+    public JsonMapStorage(ServerLevel world) {
+        this.world = world;
+    }
+
+    public void load(ServerLevel world) {
         Path path = FileUtils.getDataFile(world);
         if (Files.exists(path)) {
             try {
                 String json = Files.readString(path);
-                map = GSON.fromJson(json, MAP_TYPE);
+                this.map = GSON.fromJson(json, MAP_TYPE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void save(ServerLevel world) {
-        Path path = FileUtils.getDataFile(world);
+    public void save() {
+        Path path = FileUtils.getDataFile(this.world);
         try {
-            String json = GSON.toJson(map);
+            String json = GSON.toJson(this.map);
             Files.writeString(path, json);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Map<String, String> getMap() {
+    public void delete() {
+        map.clear();
+    }
+
+    public Map<String, String> getMap() {
         return map;
     }
 
-    public static void update(ServerLevel world, String key, String value) {
+    public void update(String key, String value) {
         map.put(key, value);
-        save(world);
+        save();
     }
 }

@@ -1,17 +1,17 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+issueTrackerURL = "https://github.com/neebooo/Create-Tram-Additions/issues"
+license = "GNU General Public License v3.0"
 
 [[mods]]
 modId = "tram_additions"
 version = "${version}"
 displayName = "Tram Additions"
-authors = "Me!"
+authors = "qliqs"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+A mod that adds on-board announcements on the trains.
 '''
-#logoFile = ""
+logoFile = "assets/create_tram_additions/icon.png"
 
 [[dependencies.tram_additions]]
 modId = "forge"
@@ -33,3 +33,17 @@ mandatory = true
 versionRange = "[9.2.14,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.tram_additions]]
+modId="create"
+mandatory=true
+versionRange="[0.5.1.f,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.tram_additions]]
+modId="createrailwaysnavigator"
+mandatory = true
+versionRange = "[1.20.1-beta-0.8.0,)"
+ordering="NONE"
+side="BOTH"

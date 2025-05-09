@@ -9,8 +9,7 @@
     "AccessorScheduleRuntime",
     "CarriageContraptionEntityMixin",
     "MixinScheduleRuntime",
-    "MixinTrainAdditionalContext",
-    "RenderCoupling"
+    "MixinTrainAdditionalContext"
   ],
   "injectors": {
     "defaultRequire": 1

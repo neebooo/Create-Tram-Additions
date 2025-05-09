@@ -39,8 +39,11 @@ dependencies {
     modImplementation("com.simibubi.create:create-${rootProject.minecraft_version}:${rootProject.create_forge_version}:slim") { transitive = false }
     modImplementation("com.tterrag.registrate:Registrate:${rootProject.registrate_forge_version}")
     modImplementation("com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_forge_version}")
-    modImplementation("curse.maven:create-railways-navigator-935929:6087014")
-
+    modImplementation("de.mrjulsen.mcdragonlib:dragonlib-forge:${rootProject.minecraft_version}-${rootProject.dragonlib_version}")
+    modImplementation("maven.modrinth:create-railways-navigator:qrO21lPQ")
+    implementation("org.java-websocket:Java-WebSocket:1.6.0")
+    forgeRuntimeLibrary("org.java-websocket:Java-WebSocket:1.6.0")
+    include("org.java-websocket:Java-WebSocket:1.6.0")
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')

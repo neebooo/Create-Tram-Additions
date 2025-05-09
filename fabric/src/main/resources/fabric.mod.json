@@ -3,15 +3,15 @@
   "id": "tram_additions",
   "version": "${version}",
   "name": "Tram Additions",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "A mod that adds on-board announcements on the trains.",
   "authors": [
-    "Me!"
+    "qliqs"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://modrinth.com/mod/create-tram-additions",
+    "sources": "https://github.com/neebooo/Create-Tram-Additions/"
   },
-  "license": "CC0-1.0",
+  "license": "GNU General Public License v3.0",
   "icon": "assets/tram_additions/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -30,9 +30,10 @@
     "minecraft": "~1.20.1",
     "java": ">=17",
     "architectury": ">=9.2.14",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "create": ">=0.5.1-f",
+    "createrailwaysnavigator": ">=1.20.1-beta-0.8.0"
   },
   "suggests": {
-    "another-mod": "*"
   }
 }
