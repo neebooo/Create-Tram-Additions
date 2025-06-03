@@ -9,19 +9,18 @@ import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Pair;
 import hu.qliqs.ICustomExecutableInstruction;
 import hu.qliqs.TramAdditions;
+import hu.qliqs.Utils;
 import hu.qliqs.mixin_interfaces.TrainACInterface;
 import hu.qliqs.mixin.AccessorScheduleRuntime;
-import hu.qliqs.networking.ModMessages;
-import hu.qliqs.networking.packets.AnnouncePacket;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static hu.qliqs.MessageMaker.formatMessage;
@@ -67,15 +66,23 @@ public class AnnounceInstruction extends ScheduleInstruction implements ICustomE
         // Warning: True is 0, False is 1 in this case. Idk what im doing with my life but not something great
         TrainACInterface train = (TrainACInterface) ((AccessorScheduleRuntime) runtime).getTrain();
         train.createTramAdditions$setOmitNextStopAnnouncement((intData("OmitNextMessage") == 0));
+
+        List<ServerPlayer> playerList = new ArrayList<>();
+
         ((AccessorScheduleRuntime) runtime).getTrain().carriages.forEach(carriage -> {
             carriage.forEachPresentEntity(entity -> {
                 entity.getIndirectPassengers().forEach(p -> {
-                    if (p instanceof Player) {
-                        ModMessages.sendToPlayer(new AnnouncePacket(finalMessage,train.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
+                    if (p instanceof ServerPlayer) {
+                        playerList.add((ServerPlayer) p);
                     }
                 });
             });
         });
+
+        ServerPlayer[] serverPlayers = playerList.toArray(new ServerPlayer[0]);
+
+        Utils.playSound(finalMessage,train.createTramAdditions$getVoiceRole(),serverPlayers);
+
         runtime.state = ScheduleRuntime.State.PRE_TRANSIT;
         runtime.currentEntry++;
     }

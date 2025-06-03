@@ -9,10 +9,11 @@
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/create-tram-additions",
-    "sources": "https://github.com/neebooo/Create-Tram-Additions/"
+    "sources": "https://github.com/neebooo/Create-Tram-Additions/",
+    "issues": "https://github.com/neebooo/Create-Tram-Additions/issues/"
   },
   "license": "GNU General Public License v3.0",
-  "icon": "assets/tram_additions/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -32,8 +33,17 @@
     "architectury": ">=9.2.14",
     "fabric-api": "*",
     "create": ">=0.5.1-f",
-    "createrailwaysnavigator": ">=1.20.1-beta-0.8.0"
+    "createrailwaysnavigator": ">=1.20.1-beta-0.8.2",
+    "dragnsounds": ">=1.20.1-beta-0.2.1"
   },
   "suggests": {
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/mFqTNncCC7"
+      },
+      "update_checker": true
+    }
   }
 }

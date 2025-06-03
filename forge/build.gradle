@@ -40,10 +40,21 @@ dependencies {
     modImplementation("com.tterrag.registrate:Registrate:${rootProject.registrate_forge_version}")
     modImplementation("com.jozufozu.flywheel:flywheel-forge-${rootProject.minecraft_version}:${rootProject.flywheel_forge_version}")
     modImplementation("de.mrjulsen.mcdragonlib:dragonlib-forge:${rootProject.minecraft_version}-${rootProject.dragonlib_version}")
-    modImplementation("maven.modrinth:create-railways-navigator:qrO21lPQ")
+    modImplementation("de.mrjulsen.dragnsounds:dragnsounds-forge:${rootProject.minecraft_version}-beta-${rootProject.dragnsounds_version}")
+    modImplementation("maven.modrinth:create-railways-navigator:kjKo6fJP")
     implementation("org.java-websocket:Java-WebSocket:1.6.0")
     forgeRuntimeLibrary("org.java-websocket:Java-WebSocket:1.6.0")
     include("org.java-websocket:Java-WebSocket:1.6.0")
+
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-core:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux32:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux64:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux-arm32:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-linux-arm64:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-win32:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-win64:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-osxm1:${rootProject.jave_version}"))
+    modImplementation(forgeRuntimeLibrary("ws.schild:jave-nativebin-osx64:${rootProject.jave_version}"))
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')

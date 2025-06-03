@@ -34,6 +34,9 @@ subprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        maven { url = "https://raw.githubusercontent.com/MisterJulsen/modsrepo/main/maven" } // DragonLib, DragNSounds API
+        maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API
+        maven { url = "https://mvnrepository.com/artifact/ws.schild/jave-all-deps"} // JAVE
         maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
         maven { url = "https://mvn.devos.one/releases/" }
         maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API
@@ -59,6 +62,10 @@ subprojects {
         maven { // DragonLib
             name = "MrJulsen's Mod Resources"
             url = "https://raw.githubusercontent.com/MisterJulsen/modsrepo/main/maven"
+        }
+        maven {
+            name = "Terraformers"
+            url = "https://maven.terraformersmc.com/"
         }
     }
 

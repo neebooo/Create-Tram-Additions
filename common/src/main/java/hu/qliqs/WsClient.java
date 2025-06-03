@@ -3,11 +3,8 @@ package hu.qliqs;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.entity.Train;
 import hu.qliqs.mixin_interfaces.TrainACInterface;
-import hu.qliqs.networking.ModMessages;
-import hu.qliqs.networking.packets.AnnouncePacket;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -61,12 +58,12 @@ public class WsClient extends WebSocketClient {
         } else if (s.startsWith("GETSOUNDS")) {
             if (args.length == 1) {
                 System.out.println("Received answer without pin");
-            } else if(args.length == 2) {
+            } else if (args.length == 2) {
                 StringBuilder list = new StringBuilder();
-                for(Map.Entry<String,String> entry : jsonMapStorage.getMap().entrySet()){
+                for (Map.Entry<String, String> entry : jsonMapStorage.getMap().entrySet()) {
                     list.append("%s%s;%s".formatted(list.isEmpty() ? "" : ";", entry.getKey(), entry.getValue()));
                 }
-                this.send("SEND|%s|false|GETSOUNDS;%s".formatted(args[1],list.toString()));
+                this.send("SEND|%s|false|GETSOUNDS;%s".formatted(args[1], list.toString()));
             }
         } else if (s.startsWith("PLAYSOUND")) {
             if (args.length == 1) {
@@ -75,35 +72,40 @@ public class WsClient extends WebSocketClient {
                 System.out.println("Received pin without sound ID");
             } else if (args.length == 3) {
                 try {
-                Train train = Create.RAILWAYS.trains.get(driverTrainMap.get(userPinMap.inverse().get(args[1])));
-                TrainACInterface trainACI = (TrainACInterface) train;
-                train.carriages.forEach(carriage -> {
-                    carriage.forEachPresentEntity(entity -> {
-                        entity.getIndirectPassengers().forEach(p -> {
-                            if (p instanceof Player) {
-                                String msg = jsonMapStorage.getMap().get(args[2]);
-                                if (msg.isEmpty()) {
-                                    return;
+                    Train train = Create.RAILWAYS.trains.get(driverTrainMap.get(userPinMap.inverse().get(args[1])));
+                    TrainACInterface trainACI = (TrainACInterface) train;
+
+                    List<ServerPlayer> playerList = new ArrayList<>();
+                    String msg = jsonMapStorage.getMap().get(args[2]);
+                    if (msg.isEmpty()) {
+                        return;
+                    }
+
+                    train.carriages.forEach(carriage -> {
+                        carriage.forEachPresentEntity(entity -> {
+                            entity.getIndirectPassengers().forEach(p -> {
+                                if (p instanceof ServerPlayer) {
+                                    playerList.add((ServerPlayer) p);
                                 }
-                                ModMessages.sendToPlayer(new AnnouncePacket(msg, trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
-                            }
+                            });
                         });
                     });
-                });
-                } catch(NullPointerException e) {
+                    ServerPlayer[] serverPlayers = playerList.toArray(new ServerPlayer[0]);
+                    Utils.playSound(msg, trainACI.createTramAdditions$getVoiceRole(), serverPlayers);
+                } catch (NullPointerException e) {
                     this.send("SEND|%s|false|PLAYSOUND;0;You are not driving a train".formatted(args[1]));
                 }
             }
-        } else if(s.startsWith("MSG")) {
-            if(args.length < 3) {
+        } else if (s.startsWith("MSG")) {
+            if (args.length < 3) {
                 System.out.println("Received answer without status code or arguments");
-            } else if(args.length == 3) {
+            } else if (args.length == 3) {
                 List<String> subargs = new ArrayList<>();
                 Collections.addAll(subargs, args[2].split(";"));
                 String command = subargs.remove(0).toLowerCase();
-                if(command.equals("updatesounds")) {
+                if (command.equals("updatesounds")) {
                     jsonMapStorage.delete();
-                    for (int i = 0; i < subargs.size(); i+=2) {
+                    for (int i = 0; i < subargs.size(); i += 2) {
                         jsonMapStorage.update(subargs.get(i), subargs.get(i + 1));
                     }
                     jsonMapStorage.save();

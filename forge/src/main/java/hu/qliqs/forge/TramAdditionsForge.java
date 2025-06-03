@@ -21,6 +21,6 @@ public final class TramAdditionsForge {
     }
     @SubscribeEvent
     public void onRegisterCommands(RegisterCommandsEvent event) {
-        TramAdditionsCommand.register(event.getDispatcher());
+        // TramAdditionsCommand.register(event.getDispatcher());
     }
 }

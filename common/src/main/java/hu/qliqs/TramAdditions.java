@@ -8,7 +8,6 @@ import dev.architectury.event.events.common.TickEvent;
 import hu.qliqs.instructions.AnnounceInstruction;
 import hu.qliqs.instructions.SetDefaultNextStopAnnouncement;
 import hu.qliqs.instructions.SetLanguageInstruction;
-import hu.qliqs.networking.ModMessages;
 import hu.qliqs.registry.ModBlocks;
 import hu.qliqs.registry.ModCreativeModeTab;
 import hu.qliqs.state.JsonMapStorage;
@@ -36,7 +35,8 @@ public final class TramAdditions {
 
     public static void init() {
         ModBlocks.init();
-        // PlatformSpecific.registerConfig();
+        ModEvents.init();
+        PlatformSpecific.registerConfig();
         ModCreativeModeTab.setup();
         LifecycleEvent.SERVER_STARTED.register(server -> {
             ServerLevel overworld = server.overworld();
@@ -46,7 +46,6 @@ public final class TramAdditions {
         });
 
         registerInstructions();
-        ModMessages.register();
         TickEvent.SERVER_PRE.register(WorldTick::onWorldTick);
 
         LifecycleEvent.SERVER_STOPPING.register(server -> {

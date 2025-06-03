@@ -13,9 +13,12 @@ dependencies {
 
     modImplementation("com.simibubi.create:create-fabric-${rootProject.minecraft_version}:${rootProject.create_fabric_version}")
     modImplementation("de.mrjulsen.mcdragonlib:dragonlib-fabric:${rootProject.minecraft_version}-${rootProject.dragonlib_version}")
-    modImplementation("maven.modrinth:create-railways-navigator:CpoOlmEe")
+    modImplementation("de.mrjulsen.dragnsounds:dragnsounds-fabric:${rootProject.minecraft_version}-beta-${rootProject.dragnsounds_version}")
+    modImplementation("maven.modrinth:create-railways-navigator:F3eWKMrk")
     implementation("org.java-websocket:Java-WebSocket:1.6.0")
     include("org.java-websocket:Java-WebSocket:1.6.0")
 
     modCompileOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}")
+
+    implementation("ws.schild:jave-all-deps:${rootProject.jave_version}")
 }

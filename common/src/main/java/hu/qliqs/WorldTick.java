@@ -3,15 +3,14 @@ package hu.qliqs;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.Create;
 import hu.qliqs.mixin_interfaces.TrainACInterface;
-import hu.qliqs.networking.ModMessages;
-import hu.qliqs.networking.packets.AnnouncePacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import static hu.qliqs.MessageMaker.makeMessage;
 import static hu.qliqs.TramAdditions.*;
@@ -66,37 +65,45 @@ public class WorldTick {
             if (train.getCurrentStation() == null && !isWaypointing(train)) {
                 hasAnnouncedCurrentStation.replace(train.id,false);
                 if (train.navigation.destination != null && !hasAnnouncedNextStation.get(train.id)) {
+                    List<ServerPlayer> playerList = new ArrayList<>();
+                    String msg = makeMessage(train.navigation.destination.id, train.navigation.destination.name, false, train);
+                    if(msg.isEmpty()) {
+                        return;
+                    }
                     train.carriages.forEach(carriage -> {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {
-                                if (p instanceof Player) {
-                                    String msg = makeMessage(train.navigation.destination.id, train.navigation.destination.name, false, train);
-                                    if (msg.isEmpty()) {
-                                        return;
-                                    }
-                                    ModMessages.sendToPlayer(new AnnouncePacket(msg,trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
+                                if (p instanceof ServerPlayer) {
+                                    playerList.add((ServerPlayer) p);
                                 }
                             });
                         });
                     });
+                    ServerPlayer[] serverPlayers = playerList.toArray(new ServerPlayer[0]);
+
                     hasAnnouncedNextStation.replace(train.id, true);
+                    Utils.playSound(msg,trainACI.createTramAdditions$getVoiceRole(),serverPlayers);
                 }
             } else {
                 if (!hasAnnouncedCurrentStation.get(train.id) && !isWaypointing(train)) {
+                    List<ServerPlayer> playerList = new ArrayList<>();
+                    String msg = makeMessage(train.getCurrentStation().id, train.getCurrentStation().name, true, train);
+                    if (msg.isEmpty()) {
+                        return;
+                    }
+
                     train.carriages.forEach(carriage -> {
                         carriage.forEachPresentEntity(entity -> {
                             entity.getIndirectPassengers().forEach(p -> {
-                                if (p instanceof Player) {
-                                    String msg = makeMessage(train.getCurrentStation().id, train.getCurrentStation().name, true, train);
-                                    if (msg.isEmpty()) {
-                                        return;
-                                    }
-                                    ModMessages.sendToPlayer(new AnnouncePacket(msg, trainACI.createTramAdditions$getVoiceRole()), (ServerPlayer) p);
+                                if (p instanceof ServerPlayer) {
+                                    playerList.add((ServerPlayer) p);
                                 }
                             });
                         });
                     });
+                    ServerPlayer[] serverPlayers = playerList.toArray(new ServerPlayer[0]);
                     hasAnnouncedCurrentStation.replace(train.id, true);
+                    Utils.playSound(msg,trainACI.createTramAdditions$getVoiceRole(),serverPlayers);
                 }
                 hasAnnouncedNextStation.replace(train.id, false);
             }

@@ -17,8 +17,5 @@ public final class TramAdditionsFabric implements ModInitializer {
         // Run our common setup.
         TramAdditions.init();
         TramAdditions.REGISTRATE.register();
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            TramAdditionsCommand.register(dispatcher);
-        });
     }
 }

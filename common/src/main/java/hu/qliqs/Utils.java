@@ -3,12 +3,23 @@ package hu.qliqs;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
+import de.mrjulsen.dragnsounds.api.ServerApi;
+import de.mrjulsen.dragnsounds.core.data.PlaybackConfig;
+import de.mrjulsen.dragnsounds.core.ffmpeg.AudioSettings;
+import de.mrjulsen.dragnsounds.core.ffmpeg.EChannels;
 import hu.qliqs.config.ModServerConfig;
 import com.simibubi.create.foundation.utility.Pair;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.function.Supplier;
 import static com.simibubi.create.content.trains.schedule.Schedule.INSTRUCTION_TYPES;
@@ -19,15 +30,16 @@ public class Utils {
         return ModServerConfig.TTS_SERVER.get();
     }
 
-    public static void playAudio(AudioInputStream audioInputStream) {
+    public static void playSound(String message, String language, ServerPlayer[] players) {
         try {
-            Clip clip = AudioSystem.getClip();
-
-            clip.open(audioInputStream);
-            clip.start();
-
+            URL url = new URL(Utils.getAPIEndpoint() + "/?text=" + URLEncoder.encode(message, StandardCharsets.UTF_8) + "&lang=" + URLEncoder.encode(language, StandardCharsets.UTF_8));
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            InputStream inputStream = con.getInputStream();
+            InputStream bufferedIn = new BufferedInputStream(inputStream);
+            ServerApi.playSoundOnce(bufferedIn,new AudioSettings(EChannels.STEREO,64000,22050,(byte)5), PlaybackConfig.defaultUI(1,1,0),players,(player, l, eSoundPlaybackStatus) -> {},null,statusResult -> {System.out.println(statusResult.message());});
         } catch (Exception e) {
-            LogUtils.getLogger().error(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
